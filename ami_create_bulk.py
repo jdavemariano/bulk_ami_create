@@ -1,14 +1,25 @@
 import csv
 import boto3
 
-# Set the AWS region
-aws_region = 'your_aws_region'  # Replace with your AWS region
+aws_region = os.environ['Region']
+
+region_lookup = {
+	"USEA":"us-east-1",
+	"USWE":"us-west-1",
+	"CACE":"ca-central-1",
+	"EUWE":"eu-west-1",
+	"EUCE":"eu-cemtral-1",
+	"APSP":"ap-southeast-1",
+	"APAU":"ap-southeast-2"
+}
+
+aws_region = region_lookup[aws_region]
 
 # Initialize the EC2 client
 ec2_client = boto3.client('ec2', region_name=aws_region)
 
 # Path to the CSV file
-csv_file_path = 'path/to/your/csv/file.csv'  # Replace with the actual path to your CSV file
+csv_file_path = 'bulk_create.csv'  # Replace with the actual path to your CSV file
 
 # Function to create AMI for EC2 instance
 def create_ami(instance_id, ami_name):
