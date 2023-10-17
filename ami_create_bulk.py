@@ -1,23 +1,24 @@
 import csv
-import subprocess
-import os
+import boto3
 
-# CSV File Name
-csv_file_path = 'path/to/your/csv/file.csv'  
+# Set the AWS region
+aws_region = 'your_aws_region'  # Replace with your AWS region
 
-# AWS CLI command to create AMI
+# Initialize the EC2 client
+ec2_client = boto3.client('ec2', region_name=aws_region)
+
+# Path to the CSV file
+csv_file_path = 'path/to/your/csv/file.csv'  # Replace with the actual path to your CSV file
+
+# Function to create AMI for EC2 instance
 def create_ami(instance_id, ami_name):
-    command = f"aws ec2 create-image --instance-id {instance_id} " \
-              f"--name '{ami_name}' --description 'AMI for {instance_id}' " \
-              "--no-reboot " \
-              "--block-device-mappings '[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"DeleteOnTermination\":true,\"VolumeType\":\"gp2\"}}]' " \
-              f"--region {os.environ['AWS_REGION']} --query 'ImageId' --output text"
-
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
-    if result.returncode == 0:
-        print(f"AMI created for instance {instance_id}: {result.stdout.strip()}")
-    else:
-        print(f"Failed to create AMI for instance {instance_id}. Error: {result.stderr.strip()}")
+    response = ec2_client.create_image(
+        Description=f'AMI for {instance_id}',
+        InstanceId=instance_id,
+        Name=ami_name,
+        NoReboot=True
+    )
+    print(f"AMI created for instance {instance_id}: {response['ImageId']}")
 
 
 # Read data from CSV and create AMIs
