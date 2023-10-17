@@ -34,7 +34,7 @@ def create_ami(instance_id, ami_name):
 
 
 # Read data from CSV and create AMIs
-with open(csv_file_path, 'r') as file:
+with open(bulk_create.csv, 'r') as file:
     csv_reader = csv.DictReader(file)
     for row in csv_reader:
         name_tag = row['NameTag']
