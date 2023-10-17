@@ -19,9 +19,6 @@ aws_region = region_lookup[aws_region]
 # Initialize the EC2 client
 ec2_client = boto3.client('ec2', region_name=aws_region)
 
-# Path to the CSV file
-csv_file_path = 'bulk_create.csv'  # Replace with the actual path to your CSV file
-
 # Function to create AMI for EC2 instance
 def create_ami(instance_id, ami_name):
     response = ec2_client.create_image(
@@ -34,7 +31,7 @@ def create_ami(instance_id, ami_name):
 
 
 # Read data from CSV and create AMIs
-with open(bulk_create.csv, 'r') as file:
+with open('bulk_create.csv', 'r') as file:
     csv_reader = csv.DictReader(file)
     for row in csv_reader:
         name_tag = row['NameTag']
