@@ -1,5 +1,6 @@
 import csv
 import boto3
+import os
 
 aws_region = os.environ['Region']
 
