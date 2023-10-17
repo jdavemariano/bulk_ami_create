@@ -34,8 +34,8 @@ def create_ami(instance_id, ami_name):
 with open('bulk_create.csv', 'r') as file:
     csv_reader = csv.DictReader(file)
     for row in csv_reader:
-        name_tag = row[0]
-        instance_id = row[1]
-        ami_name = row[2]
+        name_tag = row["NameTag"]
+        instance_id = row["InstanceID"]
+        ami_name = row["AMI"]
 
         create_ami(instance_id, ami_name)
